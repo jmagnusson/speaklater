@@ -67,6 +67,15 @@ r"""
 """
 
 
+import sys
+PY2 = sys.version_info[0] == 2
+
+if not PY2:
+    text_type = str
+else:
+    text_type = unicode  # noqa
+
+
 def is_lazy_string(obj):
     """Checks if the given object is a lazy string."""
     return isinstance(obj, _LazyString)
@@ -121,7 +130,7 @@ class _LazyString(object):
         return bool(self.value)
 
     def __dir__(self):
-        return dir(unicode)
+        return dir(text_type)
 
     def __iter__(self):
         return iter(self.value)
@@ -133,7 +142,7 @@ class _LazyString(object):
         return str(self.value)
 
     def __unicode__(self):
-        return unicode(self.value)
+        return text_type(self.value)
 
     def __add__(self, other):
         return self.value + other
